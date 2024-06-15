@@ -152,7 +152,11 @@ class LoraAprsKissTnc(SX126x): #Inheritance of SX126x class
       rssi = self.packetRssi()
       snr = self.snr()
       freq_err=self.getFreqError()
-      signalreport = "Level:"+str(rssi)+" dBm, SNR:"+str(snr)+"dB"
+      frequency_error_khz = freq_err / 1000
+      rounded_frequency_error = round(frequency_error_khz, 1)
+      # Convert to string and replace '.' with 'k'
+      signalreport = "Offset "+str(rounded_frequency_error).replace('.', 'k')+"Hz"
+      # signalreport = "Level:"+str(rssi)+" dBm, SNR:"+str(snr)+"dB"
       logf("LoRa RX[RSSI=%idBm, SNR=%.2fdB, %iBytes, Freq.Offset: %iHz]: %s" %(rssi, snr, len(payload), freq_err, repr(payload)))
       if config.disp_en:
          lcd("LoRa RX[RSSI=%idBm, SNR=%.2fdB, %iBytes, Freq.Offset: %iHz]: %s" %(rssi, snr, len(payload), freq_err, repr(payload)))
