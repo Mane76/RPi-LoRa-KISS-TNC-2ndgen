@@ -181,7 +181,11 @@ class LoraAprsKissTnc(LoRa):
         rssi = self.get_pkt_rssi_value()
         snr = self.get_pkt_snr_value()
         freq_err = self.twos_comp(self.get_fei(),20)*pow(2,24)/32e6*config.bandwidth/1000/500
-        signalreport = "Level:"+str(rssi)+" dBm, SNR:"+str(snr)+"dB"
+	frequency_error_khz = freq_err / 1000
+      	rounded_frequency_error = round(frequency_error_khz, 1)
+      	# Convert to string and replace '.' with 'k'
+      	signalreport = "Offset "+str(rounded_frequency_error).replace('.', 'k')+"Hz"
+        # signalreport = "Level:"+str(rssi)+" dBm, SNR:"+str(snr)+"dB"
         data = bytes(payload)
         logf("LoRa RX[%idBm/%.2fdB, %iHz ,%ibytes]: %s" %(rssi, snr, freq_err, len(data), repr(data)))
         if config.disp_en:
