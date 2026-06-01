@@ -99,7 +99,7 @@ def ax25parser(frame): #extracts fields from ax25 frames and add signal report d
     rpt_list = b""
     while ext == 0:
         rpt_addr, rpt_hrr, ext = decode_address(frame, pos)
-        if rpt_hrr==b'111': # H bit high-->packet has been digipeated
+        if (rpt_hrr & 4): # H bit high-->packet has been digipeated
            rpt_addr+=b'*'
         rpt_list += b","+rpt_addr
         #print("RPT: ", rpt_addr)
